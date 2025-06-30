@@ -1,5 +1,6 @@
 from discount import DiscountStrategy, NoDiscount
-from program import BasicWash, SoapWash, DeluxeWash, CarWashProgram
+from program import  CarWashProgram
+from program_variants import BasicWash, SoapWash, DeluxeWash
 
 
 class CarWashProgramFactory:
