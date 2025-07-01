@@ -1,10 +1,13 @@
+import os
+import sys
 import unittest
 from unittest.mock import patch
 
+# Add parent directory to sys.path for local imports
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from factory import CarWashProgramFactory
 from discount import NoDiscount, ReturningCustomer, DiscountStrategy
-
 
 class TestCarWashSystem(unittest.TestCase):
 
@@ -93,6 +96,7 @@ class TestCarWashSystem(unittest.TestCase):
 
         class BrokenProgram(CarWashProgram):
             def requires_soap(self): return True
+
             def requires_polish(self): return False
             # forgot calculate_price()
 
