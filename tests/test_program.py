@@ -99,6 +99,24 @@ class TestCarWashSystem(unittest.TestCase):
         with self.assertRaises(TypeError):
             BrokenProgram(NoDiscount())  # abstract method not implemented
 
+    def test_tiered_discount_logic(self):
+        class TieredDiscount(DiscountStrategy):
+            def apply(self, price):
+                if price > 10:
+                    return price * 0.80  # 20% off
+                return price * 0.90  # 10% off
+
+        deluxe = CarWashProgramFactory.get_program("C", TieredDiscount())  # $15 → 20% off → $12
+        basic = CarWashProgramFactory.get_program("A", TieredDiscount())  # $5  → 10% off → $4.5
+
+        self.assertAlmostEqual(deluxe.run(), 12.0)
+        self.assertAlmostEqual(basic.run(), 4.5)
+
+    def test_run_returns_float(self):
+        program = CarWashProgramFactory.get_program("B", ReturningCustomer())
+        result = program.run()
+        self.assertIsInstance(result, float)
+
 
 if __name__ == "__main__":
     unittest.main()
